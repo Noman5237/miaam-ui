@@ -45697,7 +45697,6 @@ app.stage.hitArea = app.renderer.screen;
 const newSlider = new _src_Slider__WEBPACK_IMPORTED_MODULE_2__["default"](app);
 // Install EventSystem, if not already (PixiJS 6 doesn't add it by default)
 
-
 })();
 
 /******/ })()
