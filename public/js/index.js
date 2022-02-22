@@ -45525,13 +45525,20 @@ class Slider {
 		}
 
 		// Make the slider
-		this.slider = app.stage.addChild(new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics().beginFill(0x38404e, 0.87).drawRect(this.xpos, this.ypos, this.width, this.height).endFill());
+		this.slider = app.stage.addChild(
+			new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics().beginFill(0x38404e, 0.87).drawRect(this.xpos, this.ypos, this.width, this.height).endFill()
+		);
 		// Add invisible scrolling area that's wider than visible slider.
 		this.slider.beginFill(0xffffff, 0.001).drawRect(this.xpos, this.ypos, this.width, this.height).endFill();
 		this.slider.interactive = true;
 		this.slider.addEventListener('wheel', this.onWheel);
 		// Draw the handle
-		this.handle = this.slider.addChild(new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics().beginFill(0x650a5a).drawCircle(this.xpos, this.ypos*2, this.radius).endFill());
+		this.handle = this.slider.addChild(
+			new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics()
+				.beginFill(0x650a5a)
+				.drawCircle(this.xpos, this.ypos * 2, this.radius)
+				.endFill()
+		);
 		this.handle.interactive = true;
 
 		this.handle.addEventListener('pointerdown', this.onDragStart);
@@ -45540,13 +45547,17 @@ class Slider {
 	}
 
 	onHandleMoved = () => {
-		// Normalize handle position between -1 and 1.
-		const t = 2 * (this.handle.position.y / this.app.renderer.screen.height - 0.5);
+		// Normalize handle position between 0 and 1.
+		const t = 2 * (this.handle.position.x / this.width - 0.5);
+		console.log(t);
 	};
 
 	onWheel = (e) => {
 		const deltaY = e.deltaY;
-		this.handle.position.x = Math.max(this.radius/2, Math.min(this.handle.position.x + deltaY, 200 - this.radius/2));
+		this.handle.position.x = Math.max(
+			this.radius / 2,
+			Math.min(this.handle.position.x + deltaY, 200 - this.radius / 2)
+		);
 		this.onHandleMoved();
 
 		e.preventDefault();
@@ -45554,7 +45565,10 @@ class Slider {
 
 	onDrag = (e) => {
 		// Set handle y-position to match pointer, clamped to (4, screen.height - 4).
-		this.handle.position.x = Math.max(this.radius/2, Math.min(this.slider.toLocal(e.global).x, 200 - this.radius/2));
+		this.handle.position.x = Math.max(
+			this.radius / 2,
+			Math.min(this.slider.toLocal(e.global).x, 200 - this.radius / 2)
+		);
 		this.onHandleMoved();
 	};
 
