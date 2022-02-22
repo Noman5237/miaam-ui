@@ -49,15 +49,16 @@ class Slider {
 
 	onHandleMoved = () => {
 		// Normalize handle position between 0 and 1.
-		const t = 2 * (this.handle.position.x / this.width - 0.5);
+		const t =  (this.handle.position.x / this.width );
 		console.log(t);
 	};
 
 	onWheel = (e) => {
 		const deltaY = e.deltaY;
 		this.handle.position.x = Math.max(
-			this.radius / 2,
-			Math.min(this.handle.position.x + deltaY, 200 - this.radius / 2)
+			0,
+			Math.min(this.handle.position.x + deltaY, 200)
+
 		);
 		this.onHandleMoved();
 
@@ -67,8 +68,8 @@ class Slider {
 	onDrag = (e) => {
 		// Set handle y-position to match pointer, clamped to (4, screen.height - 4).
 		this.handle.position.x = Math.max(
-			this.radius / 2,
-			Math.min(this.slider.toLocal(e.global).x, 200 - this.radius / 2)
+			0,
+			Math.min(this.slider.toLocal(e.global).x, 200)
 		);
 		this.onHandleMoved();
 	};
