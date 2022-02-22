@@ -2,9 +2,9 @@ import * as PIXI from 'pixi.js';
 import { EventSystem } from '@pixi/events';
 
 class Slider {
-	xpos = 10;
+	xpos = 50;
 
-	ypos = 10;
+	ypos = 300;
 
 	width = 200;
 
@@ -14,7 +14,9 @@ class Slider {
 
 	handle;
 
-	radius = 8;
+	radius = this.height/2;
+
+	value;
 
 	app;
 
@@ -37,7 +39,7 @@ class Slider {
 		this.handle = this.slider.addChild(
 			new PIXI.Graphics()
 				.beginFill(0x650a5a)
-				.drawCircle(this.xpos, this.ypos * 2, this.radius)
+				.drawCircle(this.xpos, this.ypos + this.radius, this.radius)
 				.endFill()
 		);
 		this.handle.interactive = true;
@@ -50,14 +52,14 @@ class Slider {
 	onHandleMoved = () => {
 		// Normalize handle position between 0 and 1.
 		const t =  (this.handle.position.x / this.width );
-		console.log(t);
+		this.value = t;
 	};
 
 	onWheel = (e) => {
 		const deltaY = e.deltaY;
 		this.handle.position.x = Math.max(
 			0,
-			Math.min(this.handle.position.x + deltaY, 200)
+			Math.min(this.handle.position.x + deltaY, this.width)
 
 		);
 		this.onHandleMoved();
@@ -66,10 +68,9 @@ class Slider {
 	};
 
 	onDrag = (e) => {
-		// Set handle y-position to match pointer, clamped to (4, screen.height - 4).
 		this.handle.position.x = Math.max(
 			0,
-			Math.min(this.slider.toLocal(e.global).x, 200)
+			Math.min(this.slider.toLocal(e.global).x, this.width)
 		);
 		this.onHandleMoved();
 	};
