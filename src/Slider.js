@@ -10,9 +10,13 @@ class Slider {
 
 	height = 20;
 
-	slider;
+	rect;
+
+	rect_;
 
 	handle;
+
+	handle_;
 
 	radius = this.height/2;
 
@@ -20,27 +24,30 @@ class Slider {
 
 	app;
 
+	rect;
+
+	circle;
+
+	slider;
+
 	constructor(app) {
 		this.app = app;
 
-		if (!('events' in app.renderer)) {
-			app.renderer.addSystem(EventSystem, 'events');
-		}
+		this.slider =  new PIXI.Container();
+		
 
 		// Make the slider
-		this.slider = app.stage.addChild(
-			new PIXI.Graphics().beginFill(0x38404e, 0.87).drawRect(this.xpos, this.ypos, this.width, this.height).endFill()
+		this.rect = app.stage.addChild(
+			this.createSlider()
 		);
+
 		// Add invisible scrolling area that's wider than visible slider.
-		this.slider.beginFill(0xffffff, 0.001).drawRect(this.xpos, this.ypos, this.width, this.height).endFill();
-		this.slider.interactive = true;
-		this.slider.addEventListener('wheel', this.onWheel);
+		this.rect.beginFill(0xffffff, 0.001).drawRect(this.xpos, this.ypos, this.width, this.height).endFill();
+		this.rect.interactive = true;
+		this.rect.addEventListener('wheel', this.onWheel);
 		// Draw the handle
-		this.handle = this.slider.addChild(
-			new PIXI.Graphics()
-				.beginFill(0x650a5a)
-				.drawCircle(this.xpos, this.ypos + this.radius, this.radius)
-				.endFill()
+		this.handle = this.rect.addChild(
+			this.createHandle()	
 		);
 		this.handle.interactive = true;
 
@@ -70,7 +77,7 @@ class Slider {
 	onDrag = (e) => {
 		this.handle.position.x = Math.max(
 			0,
-			Math.min(this.slider.toLocal(e.global).x, this.width)
+			Math.min(this.rect.toLocal(e.global).x, this.width)
 		);
 		this.onHandleMoved();
 	};
@@ -84,6 +91,38 @@ class Slider {
 		this.app.stage.interactive = false;
 		this.app.stage.removeEventListener('pointermove', this.onDrag);
 	};
+
+	setSliderColor = (colorcode) => {
+		
+	}
+
+	setRectColor = (colorcode) => {
+
+	}
+
+	setHandlerTexture = (texture) => {
+
+	}
+
+	setSliderTexture = (texture) => {
+		
+	}
+
+	createSlider = () => {
+
+		this.rect_ = new PIXI.Graphics().beginFill(0x38404e, 0.87).drawRect(this.xpos, this.ypos, this.width, this.height).endFill();
+		return this.rect_;
+	}
+
+
+	createHandle = () => {
+		this.handle_ =	new PIXI.Graphics()
+				.beginFill(0x650a5a)
+				.drawCircle(this.xpos, this.ypos + this.radius, this.radius)
+				.endFill();
+		return this.handle_;		
+	}
+
 }
 
 export default Slider;

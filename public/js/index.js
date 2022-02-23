@@ -45509,9 +45509,13 @@ class Slider {
 
 	height = 20;
 
-	slider;
+	rect;
+
+	rect_;
 
 	handle;
+
+	handle_;
 
 	radius = this.height/2;
 
@@ -45519,27 +45523,30 @@ class Slider {
 
 	app;
 
+	rect;
+
+	circle;
+
+	slider;
+
 	constructor(app) {
 		this.app = app;
 
-		if (!('events' in app.renderer)) {
-			app.renderer.addSystem(_pixi_events__WEBPACK_IMPORTED_MODULE_1__.EventSystem, 'events');
-		}
+		this.slider =  new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container();
+		
 
 		// Make the slider
-		this.slider = app.stage.addChild(
-			new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics().beginFill(0x38404e, 0.87).drawRect(this.xpos, this.ypos, this.width, this.height).endFill()
+		this.rect = app.stage.addChild(
+			this.createSlider()
 		);
+
 		// Add invisible scrolling area that's wider than visible slider.
-		this.slider.beginFill(0xffffff, 0.001).drawRect(this.xpos, this.ypos, this.width, this.height).endFill();
-		this.slider.interactive = true;
-		this.slider.addEventListener('wheel', this.onWheel);
+		this.rect.beginFill(0xffffff, 0.001).drawRect(this.xpos, this.ypos, this.width, this.height).endFill();
+		this.rect.interactive = true;
+		this.rect.addEventListener('wheel', this.onWheel);
 		// Draw the handle
-		this.handle = this.slider.addChild(
-			new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics()
-				.beginFill(0x650a5a)
-				.drawCircle(this.xpos, this.ypos + this.radius, this.radius)
-				.endFill()
+		this.handle = this.rect.addChild(
+			this.createHandle()	
 		);
 		this.handle.interactive = true;
 
@@ -45569,7 +45576,7 @@ class Slider {
 	onDrag = (e) => {
 		this.handle.position.x = Math.max(
 			0,
-			Math.min(this.slider.toLocal(e.global).x, this.width)
+			Math.min(this.rect.toLocal(e.global).x, this.width)
 		);
 		this.onHandleMoved();
 	};
@@ -45583,6 +45590,38 @@ class Slider {
 		this.app.stage.interactive = false;
 		this.app.stage.removeEventListener('pointermove', this.onDrag);
 	};
+
+	setSliderColor = (colorcode) => {
+		
+	}
+
+	setRectColor = (colorcode) => {
+
+	}
+
+	setHandlerTexture = (texture) => {
+
+	}
+
+	setSliderTexture = (texture) => {
+		
+	}
+
+	createSlider = () => {
+
+		this.rect_ = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics().beginFill(0x38404e, 0.87).drawRect(this.xpos, this.ypos, this.width, this.height).endFill();
+		return this.rect_;
+	}
+
+
+	createHandle = () => {
+		this.handle_ =	new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics()
+				.beginFill(0x650a5a)
+				.drawCircle(this.xpos, this.ypos + this.radius, this.radius)
+				.endFill();
+		return this.handle_;		
+	}
+
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Slider);
@@ -45692,7 +45731,7 @@ var __webpack_exports__ = {};
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/dist/esm/pixi.js");
 /* harmony import */ var _pixi_events__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @pixi/events */ "./node_modules/@pixi/events/dist/esm/events.js");
-/* harmony import */ var _src_Slider__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../../src/Slider */ "./src/Slider.js");
+/* harmony import */ var _Slider_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Slider.js */ "./src/Slider.js");
 
 
 
@@ -45711,9 +45750,26 @@ document.body.appendChild(app.view);
 // Make sure stage covers the whole scene
 app.stage.hitArea = app.renderer.screen;
 
-const newSlider = new _src_Slider__WEBPACK_IMPORTED_MODULE_2__["default"](app);
-// Install EventSystem, if not already (PixiJS 6 doesn't add it by default)
+if (!('events' in app.renderer)) {
+	app.renderer.addSystem(_pixi_events__WEBPACK_IMPORTED_MODULE_1__.EventSystem, 'events');
+}
 
+const newSlider = new _Slider_js__WEBPACK_IMPORTED_MODULE_2__["default"](app);
+// Install EventSystem, if not already (PixiJS 6 doesn't add it by default)
+const graphics = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
+
+// Rectangle
+graphics.beginFill(0xde3249);
+graphics.drawRect(50, 50, 100, 100);
+graphics.endFill();
+
+app.stage.addChild(graphics);
+
+console.log(graphics instanceof pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics);
+
+app.ticker.add(() => {
+	newSlider.rect.x += 1;
+});
 })();
 
 /******/ })()
