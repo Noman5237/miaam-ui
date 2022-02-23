@@ -37,3 +37,6 @@ console.log(newSlider.xpos);
 app.ticker.add(() => {
 	// newSlider.rect.x += 1;
 });
+
+
+let boxW = newSlider.height; 

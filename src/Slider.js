@@ -124,6 +124,26 @@ class Slider {
 		return this.#xpos;
 	}
 
+	get ypos(){
+		return this.#ypos;
+	}
+
+	get width(){
+		return this.#width;
+	}
+
+	get height(){
+		return this.#height;
+	}
+
+	get rect_(){
+		return this.#rect_;
+	}
+
+	get handler_(){
+		return this.handler_;
+	}
+
 	get slider(){
 		return this.#slider_;
 	}
