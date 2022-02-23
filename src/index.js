@@ -34,5 +34,5 @@ app.stage.addChild(graphics);
 console.log(graphics instanceof PIXI.Graphics);
 
 app.ticker.add(() => {
-	newSlider.rect.x += 1;
+	// newSlider.rect.x += 1;
 });

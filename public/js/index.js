@@ -45768,7 +45768,7 @@ app.stage.addChild(graphics);
 console.log(graphics instanceof pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics);
 
 app.ticker.add(() => {
-	newSlider.rect.x += 1;
+	// newSlider.rect.x += 1;
 });
 })();
 
