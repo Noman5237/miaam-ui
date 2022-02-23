@@ -31,7 +31,7 @@ graphics.endFill();
 
 app.stage.addChild(graphics);
 
-console.log(graphics instanceof PIXI.Graphics);
+console.log(newSlider.xpos);
 
 app.ticker.add(() => {
 	// newSlider.rect.x += 1;
