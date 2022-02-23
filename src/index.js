@@ -20,7 +20,9 @@ if (!('events' in app.renderer)) {
 	app.renderer.addSystem(EventSystem, 'events');
 }
 
-const newSlider = new Slider(app, {xpos: 200, ypos: 300}, {width: 500, height: 50} );
+const newSlider = new Slider(app, {xpos: 200, ypos: 300}, {width: 500, height: 40} );
+
+newSlider.radius = { radius: 60};
 // Install EventSystem, if not already (PixiJS 6 doesn't add it by default)
 const graphics = new PIXI.Graphics();
 
