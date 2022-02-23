@@ -24,18 +24,15 @@ class Slider {
 
 	#app;
 
-	#circle;
 
-	#slider;
+	#slider_;
 
-	constructor(app) {
-		this.#app = app;
+	constructor() {
 
-		this.#slider =  new PIXI.Container();
-		
+		this.#slider_ =  new PIXI.Container();
 
 		// Make the slider
-		this.#rect = app.stage.addChild(
+		this.#rect = this.#slider_.addChild(
 			this.createSlider()
 		);
 
@@ -52,7 +49,6 @@ class Slider {
 		this.#handle.addEventListener('pointerdown', this.onDragStart);
 		this.#handle.addEventListener('pointerup', this.onDragEnd);
 		this.#handle.addEventListener('pointerupoutside', this.onDragEnd);
-
 	}
 
 	onHandleMoved = () => {
@@ -129,7 +125,7 @@ class Slider {
 	}
 
 	get slider(){
-		return this.#slider;
+		return this.#slider_;
 	}
 
 }

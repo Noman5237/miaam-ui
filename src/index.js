@@ -24,6 +24,7 @@ const newSlider = new Slider(app);
 // Install EventSystem, if not already (PixiJS 6 doesn't add it by default)
 const graphics = new PIXI.Graphics();
 
+app.stage.addChild(newSlider.slider);
 // Rectangle
 graphics.beginFill(0xde3249);
 graphics.drawRect(50, 50, 100, 100);
