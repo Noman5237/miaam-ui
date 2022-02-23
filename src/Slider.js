@@ -18,7 +18,7 @@ class Slider {
 
 	#handle_;
 
-	#radius = this.#height/2;
+	#radius;
 
 	#value;
 
@@ -27,10 +27,20 @@ class Slider {
 
 	#slider_;
 
-	constructor() {
+	constructor(app, {xpos: xpos, ypos: ypos}, {width: width, height: height}) {
+		this.#app = app;
+
+		this.#xpos = xpos;
+
+		this.#ypos = ypos;
+
+		this.#width = width;
+
+		this.#height = height;
 
 		this.#slider_ =  new PIXI.Container();
 
+ 		this.#radius = this.#height/2;
 		// Make the slider
 		this.#rect = this.#slider_.addChild(
 			this.createSlider()
@@ -72,8 +82,9 @@ class Slider {
 	onDrag = (e) => {
 		this.#handle.position.x = Math.max(
 			0,
-			Math.min(this.#rect.toLocal(e.global).x, this.#width)
+			Math.min(this.#rect.toLocal(e.global).x-this.#xpos, this.#width)
 		);
+		console.log(this.#rect.toLocal(e.global).x);
 		this.onHandleMoved();
 	};
 

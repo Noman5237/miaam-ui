@@ -45517,7 +45517,7 @@ class Slider {
 
 	#handle_;
 
-	#radius = this.#height/2;
+	#radius;
 
 	#value;
 
@@ -45526,10 +45526,20 @@ class Slider {
 
 	#slider_;
 
-	constructor() {
+	constructor(app, {xpos: xpos, ypos: ypos}, {width: width, height: height}) {
+		this.#app = app;
+
+		this.#xpos = xpos;
+
+		this.#ypos = ypos;
+
+		this.#width = width;
+
+		this.#height = height;
 
 		this.#slider_ =  new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container();
 
+ 		this.#radius = this.#height/2;
 		// Make the slider
 		this.#rect = this.#slider_.addChild(
 			this.createSlider()
@@ -45571,8 +45581,9 @@ class Slider {
 	onDrag = (e) => {
 		this.#handle.position.x = Math.max(
 			0,
-			Math.min(this.#rect.toLocal(e.global).x, this.#width)
+			Math.min(this.#rect.toLocal(e.global).x-this.#xpos, this.#width)
 		);
+		console.log(this.#rect.toLocal(e.global).x);
 		this.onHandleMoved();
 	};
 
@@ -45779,7 +45790,7 @@ if (!('events' in app.renderer)) {
 	app.renderer.addSystem(_pixi_events__WEBPACK_IMPORTED_MODULE_1__.EventSystem, 'events');
 }
 
-const newSlider = new _Slider_js__WEBPACK_IMPORTED_MODULE_2__["default"](app);
+const newSlider = new _Slider_js__WEBPACK_IMPORTED_MODULE_2__["default"](app, {xpos: 200, ypos: 300}, {width: 500, height: 50} );
 // Install EventSystem, if not already (PixiJS 6 doesn't add it by default)
 const graphics = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
 
