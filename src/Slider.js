@@ -181,12 +181,15 @@ class Slider {
 			.endFill(); // this.#radius%this.#height
 	}
 
-	set handle({ color, alpha }) {
+	set handle({ color, alpha, radius }) {
 		if (color) {
 			this.HandleColor = color;
 		}
 		if (alpha) {
 			this.HandleAlpha = alpha;
+		}
+		if (radius) {
+			this.radius = radius;
 		}
 	}
 }

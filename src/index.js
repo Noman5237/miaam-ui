@@ -24,7 +24,7 @@ const newSlider = new Slider(app, { xpos: 200, ypos: 300 }, { width: 500, height
 
 newSlider.radius = 10;
 
-newSlider.handle = { color: 0xcf000c };
+newSlider.handle = { color: 0xcf000c, alpha: 0.5, radius: 50 };
 newSlider.SliderColor = { color: 0xffd900, alpha: 0.7 };
 // newSlider.HandleColor = { color: 0xcf000c, alpha: 1 };
 // Install EventSystem, if not already (PixiJS 6 doesn't add it by default)

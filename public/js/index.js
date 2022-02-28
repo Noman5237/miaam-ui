@@ -45679,9 +45679,15 @@ class Slider {
 			.endFill(); // this.#radius%this.#height
 	}
 
-	set handle({ color }) {
+	set handle({ color, alpha, radius }) {
 		if (color) {
 			this.HandleColor = color;
+		}
+		if (alpha) {
+			this.HandleAlpha = alpha;
+		}
+		if (radius) {
+			this.radius = radius;
 		}
 	}
 }
@@ -45820,7 +45826,7 @@ const newSlider = new _Slider_js__WEBPACK_IMPORTED_MODULE_2__["default"](app, { 
 
 newSlider.radius = 10;
 
-newSlider.handle = { color: 0xcf000c };
+newSlider.handle = { color: 0xcf000c, alpha: 0.5, radius: 50 };
 newSlider.SliderColor = { color: 0xffd900, alpha: 0.7 };
 // newSlider.HandleColor = { color: 0xcf000c, alpha: 1 };
 // Install EventSystem, if not already (PixiJS 6 doesn't add it by default)
