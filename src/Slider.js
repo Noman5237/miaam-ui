@@ -57,10 +57,12 @@ class Slider {
 		// Draw the handle
 		this.#handle = this.#rect.addChild(this.createHandle());
 		this.#handle.interactive = true;
+		this.#handle.buttonMode = true;
 
 		this.#handle.addEventListener('pointerdown', this.onDragStart);
 		this.#handle.addEventListener('pointerup', this.onDragEnd);
 		this.#handle.addEventListener('pointerupoutside', this.onDragEnd);
+		this.#handle.on('pointerover', this.onHandlerOver).on('pointerout', this.onHandlerNotOver);
 	}
 
 	onHandleMoved = () => {
@@ -74,7 +76,6 @@ class Slider {
 		const deltaY = e.deltaY;
 		this.#handle.position.x = Math.max(0, Math.min(this.#handle.position.x + deltaY, this.#width));
 		this.onHandleMoved();
-
 		e.preventDefault();
 	};
 
@@ -92,6 +93,22 @@ class Slider {
 	onDragEnd = (e) => {
 		this.#app.stage.interactive = false;
 		this.#app.stage.removeEventListener('pointermove', this.onDrag);
+	};
+
+	onHandlerOver = () => {
+		this.addTintToHandle();
+	};
+
+	onHandlerNotOver = () => {
+		this.removeTintFromHandle();
+	};
+
+	addTintToHandle = () => {
+		this.#handle.tint = 0xa7f9ff;
+	};
+
+	removeTintFromHandle = () => {
+		this.#handle.tint = 0xffffff;
 	};
 
 	setSliderColor = (colorcode) => {};

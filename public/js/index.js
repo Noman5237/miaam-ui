@@ -45698,10 +45698,12 @@ class Slider {
 		// Draw the handle
 		this.#handle = this.#rect.addChild(this.createHandle());
 		this.#handle.interactive = true;
+		this.#handle.buttonMode = true;
 
 		this.#handle.addEventListener('pointerdown', this.onDragStart);
 		this.#handle.addEventListener('pointerup', this.onDragEnd);
 		this.#handle.addEventListener('pointerupoutside', this.onDragEnd);
+		this.#handle.on('pointerover', this.onHandlerOver).on('pointerout', this.onHandlerNotOver);
 	}
 
 	onHandleMoved = () => {
@@ -45715,7 +45717,6 @@ class Slider {
 		const deltaY = e.deltaY;
 		this.#handle.position.x = Math.max(0, Math.min(this.#handle.position.x + deltaY, this.#width));
 		this.onHandleMoved();
-
 		e.preventDefault();
 	};
 
@@ -45733,6 +45734,22 @@ class Slider {
 	onDragEnd = (e) => {
 		this.#app.stage.interactive = false;
 		this.#app.stage.removeEventListener('pointermove', this.onDrag);
+	};
+
+	onHandlerOver = () => {
+		this.addTintToHandle();
+	};
+
+	onHandlerNotOver = () => {
+		this.removeTintFromHandle();
+	};
+
+	addTintToHandle = () => {
+		this.#handle.tint = 0xa7f9ff;
+	};
+
+	removeTintFromHandle = () => {
+		this.#handle.tint = 0xffffff;
 	};
 
 	setSliderColor = (colorcode) => {};
@@ -45970,7 +45987,7 @@ if (!('events' in app.renderer)) {
 
 const newSlider = new _Slider_js__WEBPACK_IMPORTED_MODULE_2__["default"](app, { xpos: 200, ypos: 300 }, { width: 500, height: 10 });
 
-newSlider.handle = { color: 0xcf000c, alpha: 0.5, radius: 50 };
+newSlider.handle = { color: 0xcf000c, alpha: 1, radius: 50 };
 newSlider.slider = { color: 0x5ef400, alpha: 0.5 };
 // newSlider.HandleColor = { color: 0xcf000c, alpha: 1 };
 // Install EventSystem, if not already (PixiJS 6 doesn't add it by default)
