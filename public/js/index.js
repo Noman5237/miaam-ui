@@ -45496,8 +45496,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/dist/esm/pixi.js");
-/* harmony import */ var _pixi_events__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @pixi/events */ "./node_modules/@pixi/events/dist/esm/events.js");
-
 
 
 class Slider {
@@ -45533,7 +45531,7 @@ class Slider {
 
 	#slider_;
 
-	constructor(app, { xpos: xpos, ypos: ypos }, { width: width, height: height }) {
+	constructor(app, { xpos, ypos }, { width, height }) {
 		this.#app = app;
 
 		this.#xpos = xpos;
@@ -45567,6 +45565,7 @@ class Slider {
 		// Normalize handle position between 0 and 1.
 		const t = this.#handle.position.x / this.#width;
 		this.#value = t;
+		console.log(t);
 	};
 
 	onWheel = (e) => {
@@ -45579,7 +45578,7 @@ class Slider {
 
 	onDrag = (e) => {
 		this.#handle.position.x = Math.max(0, Math.min(this.#rect.toLocal(e.global).x - this.#xpos, this.#width));
-		console.log(this.#rect.toLocal(e.global).x);
+		// console.log(this.#rect.toLocal(e.global).x);
 		this.onHandleMoved();
 	};
 
@@ -45603,7 +45602,7 @@ class Slider {
 
 	createSlider = () => {
 		this.rect_ = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics()
-			.beginFill(this.#rectColor, this.#rectAlpha)
+			.beginFill(0x982d16, this.#rectAlpha)
 			.drawRect(this.#xpos, this.#ypos, this.#width, this.#height)
 			.endFill();
 		return this.rect_;
@@ -45612,7 +45611,7 @@ class Slider {
 	createHandle = () => {
 		this.handle_ = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics()
 			.beginFill(this.#handleColor, this.#handleAlpha)
-			.drawCircle(this.#xpos, this.#ypos + this.#radius, this.#radius)
+			.drawCircle(this.#xpos, this.#ypos + this.#height / 2, this.#radius)
 			.endFill();
 		return this.handle_;
 	};
@@ -45645,30 +45644,45 @@ class Slider {
 		return this.#slider_;
 	}
 
-	set radius({ radius: radius }) {
-		this.#radius = radius;
-		let diff;
-		if(this.#radius > this.#height)
-		{
-			diff = this.#radius - this.#height;
-			if(this.#radius%this.#height === 0){
-				diff = diff * (this.#radius%this.#height);
-			}else{
-				diff = diff - this.#height/2;
-			}
+	set SliderColor({ color, alpha }) {
+		this.#rectColor = color;
+		this.#rectAlpha = alpha;
+		this.rect_.clear();
+		this.rect_.beginFill(this.#rectColor, 1).drawRect(this.#xpos, this.#ypos, this.#width, this.#height).endFill();
+	}
 
-		} else
-		{
-			diff = this.#height - this.#radius;
-			diff = diff * (this.#height%this.#radius);
-		}
-
-		console.log('d'+diff+'/h'+this.#height+'/r'+this.#radius+'/rbyh'+this.#radius%this.#height);
-		this.handle_.clear(); 
+	set HandleColor(color) {
+		this.#handleColor = color;
+		this.handle_.clear();
 		this.handle_
 			.beginFill(this.#handleColor, this.#handleAlpha)
-			.drawCircle(this.#xpos, this.#ypos + diff + (this.#height/2), this.#radius)
+			.drawCircle(this.#xpos, this.#ypos + this.#height / 2, this.#radius)
 			.endFill(); // this.#radius%this.#height
+	}
+
+	set HandleAlpha(alpha) {
+		this.#handleAlpha = alpha;
+		this.handle_.clear();
+		this.handle_
+			.beginFill(this.#handleColor, this.#handleAlpha)
+			.drawCircle(this.#xpos, this.#ypos + this.#height / 2, this.#radius)
+			.endFill(); // this.#radius%this.#height
+	}
+
+	set radius(radius) {
+		this.#radius = radius;
+		//		console.log('d' + diff + '/h' + this.#height + '/r' + this.#radius + '/rbyh' + (this.#radius % this.#height));
+		this.handle_.clear();
+		this.handle_
+			.beginFill(this.#handleColor, this.#handleAlpha)
+			.drawCircle(this.#xpos, this.#ypos + this.#height / 2, this.#radius)
+			.endFill(); // this.#radius%this.#height
+	}
+
+	set handle({ color }) {
+		if (color) {
+			this.HandleColor = color;
+		}
 	}
 }
 
@@ -45802,9 +45816,13 @@ if (!('events' in app.renderer)) {
 	app.renderer.addSystem(_pixi_events__WEBPACK_IMPORTED_MODULE_1__.EventSystem, 'events');
 }
 
-const newSlider = new _Slider_js__WEBPACK_IMPORTED_MODULE_2__["default"](app, {xpos: 200, ypos: 300}, {width: 500, height: 40} );
+const newSlider = new _Slider_js__WEBPACK_IMPORTED_MODULE_2__["default"](app, { xpos: 200, ypos: 300 }, { width: 500, height: 10 });
 
-newSlider.radius = { radius: 60};
+newSlider.radius = 10;
+
+newSlider.handle = { color: 0xcf000c };
+newSlider.SliderColor = { color: 0xffd900, alpha: 0.7 };
+// newSlider.HandleColor = { color: 0xcf000c, alpha: 1 };
 // Install EventSystem, if not already (PixiJS 6 doesn't add it by default)
 const graphics = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
 
@@ -45822,8 +45840,6 @@ app.ticker.add(() => {
 	// newSlider.rect.x += 1;
 });
 
-
-let boxW = newSlider.height; 
 })();
 
 /******/ })()

@@ -1,5 +1,4 @@
 import * as PIXI from 'pixi.js';
-import { EventSystem } from '@pixi/events';
 
 class Slider {
 	#xpos = 50;
@@ -34,7 +33,7 @@ class Slider {
 
 	#slider_;
 
-	constructor(app, { xpos: xpos, ypos: ypos }, { width: width, height: height }) {
+	constructor(app, { xpos, ypos }, { width, height }) {
 		this.#app = app;
 
 		this.#xpos = xpos;
@@ -68,6 +67,7 @@ class Slider {
 		// Normalize handle position between 0 and 1.
 		const t = this.#handle.position.x / this.#width;
 		this.#value = t;
+		console.log(t);
 	};
 
 	onWheel = (e) => {
@@ -80,7 +80,7 @@ class Slider {
 
 	onDrag = (e) => {
 		this.#handle.position.x = Math.max(0, Math.min(this.#rect.toLocal(e.global).x - this.#xpos, this.#width));
-		console.log(this.#rect.toLocal(e.global).x);
+		// console.log(this.#rect.toLocal(e.global).x);
 		this.onHandleMoved();
 	};
 
@@ -104,7 +104,7 @@ class Slider {
 
 	createSlider = () => {
 		this.rect_ = new PIXI.Graphics()
-			.beginFill(this.#rectColor, this.#rectAlpha)
+			.beginFill(0x982d16, this.#rectAlpha)
 			.drawRect(this.#xpos, this.#ypos, this.#width, this.#height)
 			.endFill();
 		return this.rect_;
@@ -113,7 +113,7 @@ class Slider {
 	createHandle = () => {
 		this.handle_ = new PIXI.Graphics()
 			.beginFill(this.#handleColor, this.#handleAlpha)
-			.drawCircle(this.#xpos, this.#ypos + this.#radius, this.#radius)
+			.drawCircle(this.#xpos, this.#ypos + this.#height / 2, this.#radius)
 			.endFill();
 		return this.handle_;
 	};
@@ -146,30 +146,48 @@ class Slider {
 		return this.#slider_;
 	}
 
-	set radius({ radius: radius }) {
-		this.#radius = radius;
-		let diff;
-		if(this.#radius > this.#height)
-		{
-			diff = this.#radius - this.#height;
-			if(this.#radius%this.#height === 0){
-				diff = diff * (this.#radius%this.#height);
-			}else{
-				diff = diff - this.#height/2;
-			}
+	set SliderColor({ color, alpha }) {
+		this.#rectColor = color;
+		this.#rectAlpha = alpha;
+		this.rect_.clear();
+		this.rect_.beginFill(this.#rectColor, 1).drawRect(this.#xpos, this.#ypos, this.#width, this.#height).endFill();
+	}
 
-		} else
-		{
-			diff = this.#height - this.#radius;
-			diff = diff * (this.#height%this.#radius);
-		}
-
-		console.log('d'+diff+'/h'+this.#height+'/r'+this.#radius+'/rbyh'+this.#radius%this.#height);
-		this.handle_.clear(); 
+	set HandleColor(color) {
+		this.#handleColor = color;
+		this.handle_.clear();
 		this.handle_
 			.beginFill(this.#handleColor, this.#handleAlpha)
-			.drawCircle(this.#xpos, this.#ypos + diff + (this.#height/2), this.#radius)
+			.drawCircle(this.#xpos, this.#ypos + this.#height / 2, this.#radius)
 			.endFill(); // this.#radius%this.#height
+	}
+
+	set HandleAlpha(alpha) {
+		this.#handleAlpha = alpha;
+		this.handle_.clear();
+		this.handle_
+			.beginFill(this.#handleColor, this.#handleAlpha)
+			.drawCircle(this.#xpos, this.#ypos + this.#height / 2, this.#radius)
+			.endFill(); // this.#radius%this.#height
+	}
+
+	set radius(radius) {
+		this.#radius = radius;
+		//		console.log('d' + diff + '/h' + this.#height + '/r' + this.#radius + '/rbyh' + (this.#radius % this.#height));
+		this.handle_.clear();
+		this.handle_
+			.beginFill(this.#handleColor, this.#handleAlpha)
+			.drawCircle(this.#xpos, this.#ypos + this.#height / 2, this.#radius)
+			.endFill(); // this.#radius%this.#height
+	}
+
+	set handle({ color, alpha }) {
+		if (color) {
+			this.HandleColor = color;
+		}
+		if (alpha) {
+			this.HandleAlpha = alpha;
+		}
 	}
 }
 

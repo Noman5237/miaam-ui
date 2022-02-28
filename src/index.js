@@ -20,9 +20,13 @@ if (!('events' in app.renderer)) {
 	app.renderer.addSystem(EventSystem, 'events');
 }
 
-const newSlider = new Slider(app, {xpos: 200, ypos: 300}, {width: 500, height: 40} );
+const newSlider = new Slider(app, { xpos: 200, ypos: 300 }, { width: 500, height: 10 });
 
-newSlider.radius = { radius: 60};
+newSlider.radius = 10;
+
+newSlider.handle = { color: 0xcf000c };
+newSlider.SliderColor = { color: 0xffd900, alpha: 0.7 };
+// newSlider.HandleColor = { color: 0xcf000c, alpha: 1 };
 // Install EventSystem, if not already (PixiJS 6 doesn't add it by default)
 const graphics = new PIXI.Graphics();
 
@@ -39,6 +43,3 @@ console.log(newSlider.xpos);
 app.ticker.add(() => {
 	// newSlider.rect.x += 1;
 });
-
-
-let boxW = newSlider.height; 

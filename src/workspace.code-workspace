@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "../.."
+		},
+		{
+			"path": "../../../testing-toolkit"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "MiaamUi"
+	}
+}
