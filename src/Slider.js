@@ -69,7 +69,6 @@ class Slider {
 		// Normalize handle position between 0 and 1.
 		const t = this.#handle.position.x / this.#width;
 		this.#value = t;
-		console.log(t);
 	};
 
 	onWheel = (e) => {
@@ -174,6 +173,10 @@ class Slider {
 
 	get slider() {
 		return this.#slider_;
+	}
+
+	get value() {
+		return this.#value;
 	}
 
 	set handle({ radius, color, alpha }) {
