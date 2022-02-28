@@ -45484,6 +45484,149 @@ module.exports = {
 
 /***/ }),
 
+/***/ "./src/RadioButton.js":
+/*!****************************!*\
+  !*** ./src/RadioButton.js ***!
+  \****************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/dist/esm/pixi.js");
+
+
+class RadioButton {
+	#xpos = 30;
+
+	#ypos = 300;
+
+	#outterRadius = 50;
+
+	#innerRadius = 50 - 10;
+
+	#isActive = false;
+
+	#outterCircleColor = 0xffbf01;
+
+	#outterCircleAlpha = 1;
+
+	#innerCircleColor = 0xffbf01;
+
+	#innerCircleAlpha = 1;
+
+	#isActiveColor = 0x000000;
+
+	#outterCircle;
+
+	#oc;
+
+	#innerCircle;
+
+	#ic;
+
+	#radioButton;
+
+	constructor({ xpos, ypos, radius }) {
+		this.#xpos = xpos;
+		this.#ypos = ypos;
+		this.#outterRadius = radius;
+		this.#innerRadius = this.#outterRadius - 10;
+		this.#radioButton = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Container();
+		this.#outterCircle = this.#radioButton.addChild(this.CreateOutterCircle());
+
+		this.#innerCircle = this.#outterCircle.addChild(this.CreateInnerCircle());
+
+		this.#outterCircle.interactive = true;
+		this.#outterCircle.buttonMode = true;
+		this.#outterCircle.on('pointerdown', this.onClick);
+	}
+
+	CreateOutterCircle = () => {
+		this.ic = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics()
+			.beginFill(this.#outterCircleColor, this.#outterCircleAlpha)
+			.drawCircle(this.#xpos, this.#ypos, this.#outterRadius)
+			.endFill();
+		return this.ic;
+	};
+
+	CreateInnerCircle = () => {
+		this.ic = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics()
+			.beginFill(this.#innerCircleColor, this.#innerCircleAlpha)
+			.drawCircle(this.#xpos, this.#ypos, this.#innerRadius)
+			.endFill();
+		return this.ic;
+	};
+
+	ReCreateOutterCircle = () => {
+		this.#outterCircle.clear();
+		this.#outterCircle
+			.beginFill(this.#outterCircleColor, this.#outterCircleAlpha)
+			.drawCircle(this.#xpos, this.#ypos, this.#outterRadius)
+			.endFill();
+	};
+
+	ReCreateInnerCircle = () => {
+		this.#innerCircle.clear();
+		this.#innerCircle
+			.beginFill(this.#innerCircleColor, this.#innerCircleAlpha)
+			.drawCircle(this.#xpos, this.#ypos, this.#innerRadius)
+			.endFill();
+		return this.ic;
+	};
+
+	onClick = () => {
+		if (this.#isActive === false) {
+			this.#isActive = true;
+			this.#innerCircleColor = this.#isActiveColor;
+			this.ReCreateInnerCircle();
+		} else {
+			this.#isActive = false;
+			this.#innerCircleColor = this.#outterCircleColor;
+			this.ReCreateInnerCircle();
+		}
+
+		console.log(this.#isActive);
+	};
+
+	get radioButton() {
+		return this.#radioButton;
+	}
+
+	set radioButton({ xpos, ypos, icRad, ocRad, color, isActiveColor, isActive }) {
+		if (xpos) {
+			this.#xpos = xpos;
+		}
+		if (ypos) {
+			this.#ypos = ypos;
+		}
+		if (icRad) {
+			this.#innerRadius = icRad;
+		}
+		if (ocRad) {
+			this.#outterRadius = ocRad;
+		}
+		if (color) {
+			this.#innerCircle = color;
+		}
+		if (isActiveColor) {
+			this.#isActiveColor = isActiveColor;
+		}
+		if (isActive) {
+			this.#isActive = isActive;
+		}
+		this.ReCreateOutterCircle();
+		this.ReCreateInnerCircle();
+	}
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (RadioButton);
+
+
+/***/ }),
+
 /***/ "./src/Slider.js":
 /*!***********************!*\
   !*** ./src/Slider.js ***!
@@ -45608,12 +45751,25 @@ class Slider {
 		return this.rect_;
 	};
 
+	reCreateSlider = () => {
+		this.rect_.clear();
+		this.rect_.beginFill(this.#rectColor, 1).drawRect(this.#xpos, this.#ypos, this.#width, this.#height).endFill();
+	};
+
 	createHandle = () => {
 		this.handle_ = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics()
 			.beginFill(this.#handleColor, this.#handleAlpha)
 			.drawCircle(this.#xpos, this.#ypos + this.#height / 2, this.#radius)
 			.endFill();
 		return this.handle_;
+	};
+
+	reCreateHandler = () => {
+		this.handle_.clear();
+		this.handle_
+			.beginFill(this.#handleColor, this.#handleAlpha)
+			.drawCircle(this.#xpos, this.#ypos + this.#height / 2, this.#radius)
+			.endFill(); // this.#radius%this.#height
 	};
 
 	get xpos() {
@@ -45644,51 +45800,39 @@ class Slider {
 		return this.#slider_;
 	}
 
-	set SliderColor({ color, alpha }) {
-		this.#rectColor = color;
-		this.#rectAlpha = alpha;
-		this.rect_.clear();
-		this.rect_.beginFill(this.#rectColor, 1).drawRect(this.#xpos, this.#ypos, this.#width, this.#height).endFill();
-	}
-
-	set HandleColor(color) {
-		this.#handleColor = color;
-		this.handle_.clear();
-		this.handle_
-			.beginFill(this.#handleColor, this.#handleAlpha)
-			.drawCircle(this.#xpos, this.#ypos + this.#height / 2, this.#radius)
-			.endFill(); // this.#radius%this.#height
-	}
-
-	set HandleAlpha(alpha) {
-		this.#handleAlpha = alpha;
-		this.handle_.clear();
-		this.handle_
-			.beginFill(this.#handleColor, this.#handleAlpha)
-			.drawCircle(this.#xpos, this.#ypos + this.#height / 2, this.#radius)
-			.endFill(); // this.#radius%this.#height
-	}
-
-	set radius(radius) {
-		this.#radius = radius;
-		//		console.log('d' + diff + '/h' + this.#height + '/r' + this.#radius + '/rbyh' + (this.#radius % this.#height));
-		this.handle_.clear();
-		this.handle_
-			.beginFill(this.#handleColor, this.#handleAlpha)
-			.drawCircle(this.#xpos, this.#ypos + this.#height / 2, this.#radius)
-			.endFill(); // this.#radius%this.#height
-	}
-
-	set handle({ color, alpha, radius }) {
+	set handle({ radius, color, alpha }) {
 		if (color) {
-			this.HandleColor = color;
+			this.#handleColor = color;
 		}
 		if (alpha) {
-			this.HandleAlpha = alpha;
+			this.#handleAlpha = alpha;
 		}
 		if (radius) {
-			this.radius = radius;
+			this.#radius = radius;
 		}
+		this.reCreateHandler();
+	}
+
+	set slider({ xpos, ypos, width, height, color, alpha }) {
+		if (xpos) {
+			this.#xpos = xpos;
+		}
+		if (ypos) {
+			this.#ypos = ypos;
+		}
+		if (width) {
+			this.#width = width;
+		}
+		if (height) {
+			this.#height = height;
+		}
+		if (color) {
+			this.#rectColor = color;
+		}
+		if (alpha) {
+			this.#rectAlpha = alpha;
+		}
+		this.reCreateSlider();
 	}
 }
 
@@ -45800,6 +45944,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ "./node_modules/pixi.js/dist/esm/pixi.js");
 /* harmony import */ var _pixi_events__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @pixi/events */ "./node_modules/@pixi/events/dist/esm/events.js");
 /* harmony import */ var _Slider_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Slider.js */ "./src/Slider.js");
+/* harmony import */ var _RadioButton_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./RadioButton.js */ "./src/RadioButton.js");
+
 
 
 
@@ -45824,21 +45970,24 @@ if (!('events' in app.renderer)) {
 
 const newSlider = new _Slider_js__WEBPACK_IMPORTED_MODULE_2__["default"](app, { xpos: 200, ypos: 300 }, { width: 500, height: 10 });
 
-newSlider.radius = 10;
-
 newSlider.handle = { color: 0xcf000c, alpha: 0.5, radius: 50 };
-newSlider.SliderColor = { color: 0xffd900, alpha: 0.7 };
+newSlider.slider = { color: 0x5ef400, alpha: 0.5 };
 // newSlider.HandleColor = { color: 0xcf000c, alpha: 1 };
 // Install EventSystem, if not already (PixiJS 6 doesn't add it by default)
 const graphics = new pixi_js__WEBPACK_IMPORTED_MODULE_0__.Graphics();
 
 app.stage.addChild(newSlider.slider);
+
+// radioButton
+const newRadio = new _RadioButton_js__WEBPACK_IMPORTED_MODULE_3__["default"]({ xpos: 500, ypos: 60, radius: 40 });
+
 // Rectangle
 graphics.beginFill(0xde3249);
 graphics.drawRect(50, 50, 100, 100);
 graphics.endFill();
 
-app.stage.addChild(graphics);
+// app.stage.addChild(graphics);
+app.stage.addChild(newRadio.radioButton);
 
 console.log(newSlider.xpos);
 

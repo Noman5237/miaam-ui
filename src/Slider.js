@@ -110,12 +110,25 @@ class Slider {
 		return this.rect_;
 	};
 
+	reCreateSlider = () => {
+		this.rect_.clear();
+		this.rect_.beginFill(this.#rectColor, 1).drawRect(this.#xpos, this.#ypos, this.#width, this.#height).endFill();
+	};
+
 	createHandle = () => {
 		this.handle_ = new PIXI.Graphics()
 			.beginFill(this.#handleColor, this.#handleAlpha)
 			.drawCircle(this.#xpos, this.#ypos + this.#height / 2, this.#radius)
 			.endFill();
 		return this.handle_;
+	};
+
+	reCreateHandler = () => {
+		this.handle_.clear();
+		this.handle_
+			.beginFill(this.#handleColor, this.#handleAlpha)
+			.drawCircle(this.#xpos, this.#ypos + this.#height / 2, this.#radius)
+			.endFill(); // this.#radius%this.#height
 	};
 
 	get xpos() {
@@ -146,51 +159,39 @@ class Slider {
 		return this.#slider_;
 	}
 
-	set SliderColor({ color, alpha }) {
-		this.#rectColor = color;
-		this.#rectAlpha = alpha;
-		this.rect_.clear();
-		this.rect_.beginFill(this.#rectColor, 1).drawRect(this.#xpos, this.#ypos, this.#width, this.#height).endFill();
-	}
-
-	set HandleColor(color) {
-		this.#handleColor = color;
-		this.handle_.clear();
-		this.handle_
-			.beginFill(this.#handleColor, this.#handleAlpha)
-			.drawCircle(this.#xpos, this.#ypos + this.#height / 2, this.#radius)
-			.endFill(); // this.#radius%this.#height
-	}
-
-	set HandleAlpha(alpha) {
-		this.#handleAlpha = alpha;
-		this.handle_.clear();
-		this.handle_
-			.beginFill(this.#handleColor, this.#handleAlpha)
-			.drawCircle(this.#xpos, this.#ypos + this.#height / 2, this.#radius)
-			.endFill(); // this.#radius%this.#height
-	}
-
-	set radius(radius) {
-		this.#radius = radius;
-		//		console.log('d' + diff + '/h' + this.#height + '/r' + this.#radius + '/rbyh' + (this.#radius % this.#height));
-		this.handle_.clear();
-		this.handle_
-			.beginFill(this.#handleColor, this.#handleAlpha)
-			.drawCircle(this.#xpos, this.#ypos + this.#height / 2, this.#radius)
-			.endFill(); // this.#radius%this.#height
-	}
-
-	set handle({ color, alpha, radius }) {
+	set handle({ radius, color, alpha }) {
 		if (color) {
-			this.HandleColor = color;
+			this.#handleColor = color;
 		}
 		if (alpha) {
-			this.HandleAlpha = alpha;
+			this.#handleAlpha = alpha;
 		}
 		if (radius) {
-			this.radius = radius;
+			this.#radius = radius;
 		}
+		this.reCreateHandler();
+	}
+
+	set slider({ xpos, ypos, width, height, color, alpha }) {
+		if (xpos) {
+			this.#xpos = xpos;
+		}
+		if (ypos) {
+			this.#ypos = ypos;
+		}
+		if (width) {
+			this.#width = width;
+		}
+		if (height) {
+			this.#height = height;
+		}
+		if (color) {
+			this.#rectColor = color;
+		}
+		if (alpha) {
+			this.#rectAlpha = alpha;
+		}
+		this.reCreateSlider();
 	}
 }
 
