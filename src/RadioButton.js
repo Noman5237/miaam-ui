@@ -1,9 +1,9 @@
 import * as PIXI from 'pixi.js';
 
 class RadioButton {
-	#xpos = 30;
+	#x = 30;
 
-	#ypos = 300;
+	#y = 300;
 
 	#outterRadius = 50;
 
@@ -31,9 +31,9 @@ class RadioButton {
 
 	#radioButton;
 
-	constructor({ xpos, ypos, radius }) {
-		this.#xpos = xpos;
-		this.#ypos = ypos;
+	constructor({ x, y, radius }) {
+		this.#x = x;
+		this.#y = y;
 		this.#outterRadius = radius;
 		this.#innerRadius = this.#outterRadius - 10;
 		this.#radioButton = new PIXI.Container();
@@ -49,7 +49,7 @@ class RadioButton {
 	CreateOutterCircle = () => {
 		this.ic = new PIXI.Graphics()
 			.beginFill(this.#outterCircleColor, this.#outterCircleAlpha)
-			.drawCircle(this.#xpos, this.#ypos, this.#outterRadius)
+			.drawCircle(this.#x, this.#y, this.#outterRadius)
 			.endFill();
 		return this.ic;
 	};
@@ -57,7 +57,7 @@ class RadioButton {
 	CreateInnerCircle = () => {
 		this.ic = new PIXI.Graphics()
 			.beginFill(this.#innerCircleColor, this.#innerCircleAlpha)
-			.drawCircle(this.#xpos, this.#ypos, this.#innerRadius)
+			.drawCircle(this.#x, this.#y, this.#innerRadius)
 			.endFill();
 		return this.ic;
 	};
@@ -66,7 +66,7 @@ class RadioButton {
 		this.#outterCircle.clear();
 		this.#outterCircle
 			.beginFill(this.#outterCircleColor, this.#outterCircleAlpha)
-			.drawCircle(this.#xpos, this.#ypos, this.#outterRadius)
+			.drawCircle(this.#x, this.#y, this.#outterRadius)
 			.endFill();
 	};
 
@@ -74,7 +74,7 @@ class RadioButton {
 		this.#innerCircle.clear();
 		this.#innerCircle
 			.beginFill(this.#innerCircleColor, this.#innerCircleAlpha)
-			.drawCircle(this.#xpos, this.#ypos, this.#innerRadius)
+			.drawCircle(this.#x, this.#y, this.#innerRadius)
 			.endFill();
 		return this.ic;
 	};
@@ -97,12 +97,12 @@ class RadioButton {
 		return this.#radioButton;
 	}
 
-	set radioButton({ xpos, ypos, icRad, ocRad, color, isActiveColor, isActive }) {
-		if (xpos) {
-			this.#xpos = xpos;
+	set radioButton({ x, y, icRad, ocRad, color, isActiveColor, isActive }) {
+		if (x) {
+			this.#x = x;
 		}
-		if (ypos) {
-			this.#ypos = ypos;
+		if (y) {
+			this.#y = y;
 		}
 		if (icRad) {
 			this.#innerRadius = icRad;

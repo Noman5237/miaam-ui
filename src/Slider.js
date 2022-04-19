@@ -1,9 +1,9 @@
 import * as PIXI from 'pixi.js';
 
 class Slider {
-	#xpos = 50;
+	#x = 50;
 
-	#ypos = 300;
+	#y = 300;
 
 	#width = 200;
 
@@ -33,12 +33,12 @@ class Slider {
 
 	#slider_;
 
-	constructor(app, { xpos, ypos }, { width, height }) {
+	constructor(app, { x, y }, { width, height }) {
 		this.#app = app;
 
-		this.#xpos = xpos;
+		this.#x = x;
 
-		this.#ypos = ypos;
+		this.#y = y;
 
 		this.#width = width;
 
@@ -51,7 +51,7 @@ class Slider {
 		this.#rect = this.#slider_.addChild(this.createSlider());
 
 		// Add invisible scrolling area that's wider than visible slider.
-		this.#rect.beginFill(0xffffff, 0.001).drawRect(this.#xpos, this.#ypos, this.#width, this.#height).endFill();
+		this.#rect.beginFill(0xffffff, 0.001).drawRect(this.#x, this.#y, this.#width, this.#height).endFill();
 		this.#rect.interactive = true;
 		this.#rect.addEventListener('wheel', this.onWheel);
 		// Draw the handle
@@ -79,7 +79,7 @@ class Slider {
 	};
 
 	onDrag = (e) => {
-		this.#handle.position.x = Math.max(0, Math.min(this.#rect.toLocal(e.global).x - this.#xpos, this.#width));
+		this.#handle.position.x = Math.max(0, Math.min(this.#rect.toLocal(e.global).x - this.#x, this.#width));
 		// console.log(this.#rect.toLocal(e.global).x);
 		this.onHandleMoved();
 	};
@@ -121,20 +121,20 @@ class Slider {
 	createSlider = () => {
 		this.rect_ = new PIXI.Graphics()
 			.beginFill(0x982d16, this.#rectAlpha)
-			.drawRect(this.#xpos, this.#ypos, this.#width, this.#height)
+			.drawRect(this.#x, this.#y, this.#width, this.#height)
 			.endFill();
 		return this.rect_;
 	};
 
 	reCreateSlider = () => {
 		this.rect_.clear();
-		this.rect_.beginFill(this.#rectColor, 1).drawRect(this.#xpos, this.#ypos, this.#width, this.#height).endFill();
+		this.rect_.beginFill(this.#rectColor, 1).drawRect(this.#x, this.#y, this.#width, this.#height).endFill();
 	};
 
 	createHandle = () => {
 		this.handle_ = new PIXI.Graphics()
 			.beginFill(this.#handleColor, this.#handleAlpha)
-			.drawCircle(this.#xpos, this.#ypos + this.#height / 2, this.#radius)
+			.drawCircle(this.#x, this.#y + this.#height / 2, this.#radius)
 			.endFill();
 		return this.handle_;
 	};
@@ -143,16 +143,16 @@ class Slider {
 		this.handle_.clear();
 		this.handle_
 			.beginFill(this.#handleColor, this.#handleAlpha)
-			.drawCircle(this.#xpos, this.#ypos + this.#height / 2, this.#radius)
+			.drawCircle(this.#x, this.#y + this.#height / 2, this.#radius)
 			.endFill(); // this.#radius%this.#height
 	};
 
-	get xpos() {
-		return this.#xpos;
+	get x() {
+		return this.#x;
 	}
 
-	get ypos() {
-		return this.#ypos;
+	get y() {
+		return this.#y;
 	}
 
 	get width() {
@@ -192,12 +192,12 @@ class Slider {
 		this.reCreateHandler();
 	}
 
-	set slider({ xpos, ypos, width, height, color, alpha }) {
-		if (xpos) {
-			this.#xpos = xpos;
+	set slider({ x, y, width, height, color, alpha }) {
+		if (x) {
+			this.#x = x;
 		}
-		if (ypos) {
-			this.#ypos = ypos;
+		if (y) {
+			this.#y = y;
 		}
 		if (width) {
 			this.#width = width;
